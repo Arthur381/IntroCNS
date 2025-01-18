@@ -38,7 +38,7 @@ class CANN1D_SFA(bp.dyn.NeuDyn):
   # 微分方程
   def du(self, u, t, v, Irec, Iext):
     # TODO: 定义u的微分方程
-    return (-u + Irec + Iext) / self.tau
+    return (-u + Irec + Iext-v) / self.tau
 
   def dv(self, v, t, u):
     # TODO: 定义v的微分方程
@@ -74,7 +74,24 @@ class CANN1D_SFA(bp.dyn.NeuDyn):
 
 def anticipative_tracking(m=10,v_ext=6*1e-3):
     cann_sfa = CANN1D_SFA(num=512, m=m)
-    
+    """
+    预期追踪函数：模拟并可视化一个连续吸引子神经网络（CANN）模型的预期追踪行为。
+
+    参数：
+        m (float)：模型中的一个参数，用于调整神经元的活动。
+        v_ext (float)：外部刺激的速度。
+
+    返回：
+        无
+
+    注释：
+        1. 创建一个包含512个神经元的CANN模型实例。
+        2. 定义一个随时间变化的外部刺激，初始持续时间为10ms，随后持续1000ms。
+        3. 计算外部刺激的位置，模拟刺激在神经元空间中的移动。
+        4. 使用DSRunner运行模拟，记录神经元的活动。
+        5. 可视化模拟结果，包括不同时间点的神经元活动和外部刺激。
+        6. 生成一个动画，展示神经元活动和外部刺激随时间的变化。
+    """
     # 定义随时间变化的外部刺激
     v_ext = v_ext
     dur1, dur2, = 10., 1000.
@@ -122,7 +139,9 @@ def anticipative_tracking(m=10,v_ext=6*1e-3):
     plt.show()
 
 
-anticipative_tracking(10,1)
+anticipative_tracking(m=50,v_ext=0.1)
 
 # TODO: 任务2，改变输入移动的快慢
 #anticipative_tracking(?????)
+
+#2014
